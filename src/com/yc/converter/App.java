@@ -9,7 +9,7 @@ public class App {
     static List<String> hun = Arrays.asList("", "C", "CC", "CCC", "CD", "D", "DC", "DCC", "DCCC", "CM", "M");
     public static void main(String[] args) {
         System.err.println(romanConverter(888));
-        System.err.println(decimalConverter("DCCC", "LXXX", "VIII"));
+        System.err.println(romanToDecimal("MCMXCIV"));
     }
 
     public static String romanConverter(int num) {
@@ -24,23 +24,45 @@ public class App {
         return(hun.get(h) + dec.get(d) + uni.get(u));
     }
 
-    public static String decimalConverter(String hundred, String decimal, String unit) {
-        String u, d, h;
+    public static int value(char r)
+    {
+        if (r == 'I')
+            return 1;
+        if (r == 'V')
+            return 5;
+        if (r == 'X')
+            return 10;
+        if (r == 'L')
+            return 50;
+        if (r == 'C')
+            return 100;
+        if (r == 'D')
+            return 500;
+        if (r == 'M')
+            return 1000;
+        return -1;
+    }
 
-        u = uni.indexOf(unit) + "";
-        d = dec.indexOf(decimal) + "";
-        h = hun.indexOf(hundred) + "";
+    public static int romanToDecimal(String str) {
+        int res = 0;
 
-        if (uni.indexOf(unit) ==-1) {
-            u = "";
-        }
-        if (dec.indexOf(decimal) == -1) {
-            d = "";
-        }
-        if (hun.indexOf(hundred) == -1) {
-            h = "";
-        }
+        for (int i = 0; i < str.length(); i++) {
+            int s1 = value(str.charAt(i));
 
-        return (h+d+u);
+            if (i + 1 < str.length()) {
+                int s2 = value(str.charAt(i + 1));
+
+                if (s1 >= s2) {
+                    res = res + s1;
+                } else {
+                    res = res + s2 - s1;
+                    i++;
+                }
+            } else {
+                res = res + s1;
+                i++;
+            }
+        }
+        return res;
     }
 }
